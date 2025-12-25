@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Analysis - {{ name }} | EduVisor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Analysis for "{{ name }}"</h1>
+    <p class="text-center text-muted">{{ date }}</p>
+    
+    <div class="metrics-grid">
+        <div class="card metric-card">
+            <h3>Questions</h3>
+            <h2>{{ questions }}</h2>
+        </div>
+        
+        <div class="card metric-card">
+            <h3>Engagement</h3>
+            <h2>{{ engagement_score }}%</h2>
+        </div>
+        
+        <div class="card metric-card">
+            <h3>Tone Modulation</h3>
+            <h2>{{ tone_modulation }}%</h2>
+        </div>
+        
+        <div class="card metric-card">
+            <h3>Words/Minute</h3>
+            <h2>{{ wpm }}</h2>
+        </div>
+    </div>
+    
+    <div class="dashboard-row">
+        <div class="card dashboard-panel">
+            <h3>Engagement Timeline</h3>
+            <div class="graph-container">
+                {% if graph %}
+                    {{ graph|safe }}
+                {% else %}
+                    <p class="text-center text-muted">No visualization available</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card dashboard-panel">
+            <h3>AI Feedback</h3>
+            <div class="feedback-text">{{ suggestion }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

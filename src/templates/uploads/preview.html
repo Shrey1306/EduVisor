@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Preview - {{ video_name }} | EduVisor{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1>{{ video_name }}</h1>
+    
+    <div class="video-container">
+        <video class="video-player" controls>
+            <source src="{{ video_url }}" type="video/mp4">
+            Your browser does not support video playback.
+        </video>
+    </div>
+    
+    <a href="{% url 'analysis:loading' %}" class="btn btn-primary btn-large">
+        Analyze Lecture
+    </a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,4 @@
+"""
+Lecture history application.
+"""
+

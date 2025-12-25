@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture History | EduVisor</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="bg-gradient">
+    <div class="history-layout">
+        <aside class="history-sidebar">
+            <a href="{% url 'uploads:upload' %}" class="home-link">← Home</a>
+            
+            {% for lecture in lectures %}
+            <div class="lecture-item" 
+                 data-id="{{ lecture.id }}"
+                 data-name="{{ lecture.name }}"
+                 data-date="{{ lecture.created_at }}"
+                 data-questions="{{ lecture.questions }}"
+                 data-engagement="{{ lecture.engagement_ratio }}"
+                 data-tone="{{ lecture.tone_modality }}"
+                 data-wpm="{{ lecture.wpm }}"
+                 data-suggestion="{{ lecture.suggestion }}">
+                <strong>{{ lecture.name }}</strong><br>
+                <small>{{ lecture.created_at|date:"M d, Y" }}</small>
+            </div>
+            <div id="graph-{{ lecture.id }}" style="display: none;">
+                {{ lecture.graph|safe }}
+            </div>
+            {% empty %}
+            <div class="empty-state">No lectures analyzed yet.</div>
+            {% endfor %}
+        </aside>
+        
+        <main class="history-main">
+            <div class="container">
+                <h1 id="lecture-name">Select a Lecture</h1>
+                <p id="lecture-date" class="text-center text-muted"></p>
+                
+                <div class="metrics-grid">
+                    <div class="card metric-card">
+                        <h3>Questions</h3>
+                        <h2 id="metric-questions">-</h2>
+                    </div>
+                    <div class="card metric-card">
+                        <h3>Engagement</h3>
+                        <h2 id="metric-engagement">-</h2>
+                    </div>
+                    <div class="card metric-card">
+                        <h3>Tone Modulation</h3>
+                        <h2 id="metric-tone">-</h2>
+                    </div>
+                    <div class="card metric-card">
+                        <h3>Words/Minute</h3>
+                        <h2 id="metric-wpm">-</h2>
+                    </div>
+                </div>
+                
+                <div class="dashboard-row">
+                    <div class="card dashboard-panel">
+                        <h3>Engagement Timeline</h3>
+                        <div class="graph-container" id="graph-container">
+                            <p class="text-center text-muted">Select a lecture to view.</p>
+                        </div>
+                    </div>
+                    <div class="card dashboard-panel">
+                        <h3>AI Feedback</h3>
+                        <div class="feedback-text" id="feedback-text">
+                            Select a lecture to view feedback.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const items = document.querySelectorAll(".lecture-item");
+            
+            items.forEach(item => {
+                item.addEventListener("click", function() {
+                    items.forEach(i => i.classList.remove("active"));
+                    this.classList.add("active");
+                    
+                    document.getElementById("lecture-name").textContent = this.dataset.name;
+                    document.getElementById("lecture-date").textContent = new Date(this.dataset.date).toLocaleDateString();
+                    document.getElementById("metric-questions").textContent = this.dataset.questions;
+                    document.getElementById("metric-engagement").textContent = this.dataset.engagement + "%";
+                    document.getElementById("metric-tone").textContent = this.dataset.tone + "%";
+                    document.getElementById("metric-wpm").textContent = this.dataset.wpm;
+                    document.getElementById("feedback-text").textContent = this.dataset.suggestion;
+                    document.getElementById("graph-container").innerHTML = 
+                        document.getElementById("graph-" + this.dataset.id).innerHTML;
+                });
+            });
+            
+            if (items.length > 0) items[0].click();
+        });
+    </script>
+</body>
+</html>
+
