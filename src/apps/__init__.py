@@ -1,0 +1,4 @@
+"""
+EduVisor Django applications.
+"""
+

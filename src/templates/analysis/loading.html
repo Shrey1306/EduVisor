@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyzing... | EduVisor</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = "{% url 'analysis:analyze' %}";
+            }, 2000);
+        };
+    </script>
+</head>
+<body class="bg-gradient content-center">
+    <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-message">Analyzing your lecture...</p>
+        <p class="loader-hint">This may take a few minutes depending on lecture length.</p>
+    </div>
+</body>
+</html>
+
